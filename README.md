@@ -29,6 +29,17 @@ The implementation is original and does not copy OneZoom’s current viewer code
 
 The human-family view is intentionally presented as an educational schematic rather than a claim that every named fossil species is a direct ancestor. Dashed links mark uncertain or debated relationships.
 
+## Scientists versus superstition
+
+A dedicated section presents short, attributed quotations from Richard Feynman, Carl Sagan, Charles Darwin, and Marie Curie. Each quotation links to its source and is followed by a separately labelled sarcastic interpretation written for this project, so historical quotations are not mixed with invented lines.
+
+## Reliability changes
+
+- rotating homepage material is imported directly instead of depending on client-side requests during startup
+- user-triggered sharing and clipboard actions have browser-safe fallbacks
+- atlas wheel handling uses a non-passive listener and cleans itself up correctly
+- direct page rendering remains usable even when an optional API route is unavailable
+
 ## Stack
 
 - Next.js 14 App Router
@@ -54,11 +65,12 @@ npm start
 
 ## Project structure
 
-- Reality checks, comparisons, contradictions, timeline steps, and evidence-backed facts: `lib/content.js`
+- Reality checks, comparisons, contradictions, scientist quotations, timeline steps, and evidence-backed facts: `lib/content.js`
 - Life atlas data: `lib/evolutionLife.js`
 - Human-family data: `lib/evolutionHuman.js`
 - Shared atlas exports and references: `lib/evolutionTree.js`
 - Organism and anatomy drawings: `app/components/SpeciesGlyph.js`
 - Atlas interaction and rendering: `app/components/EvolutionTree.js`
 - Page composition: `app/page.js`
-- Visual design: `app/globals.css`
+- Main visual system: `app/globals.css`
+- Scientist-card visual system: `app/scientists.css`
