@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import EvolutionTree from "./components/EvolutionTree";
 import { LADDER } from "../lib/content";
 
 export default function Home() {
@@ -47,35 +48,30 @@ export default function Home() {
     setTimeout(() => { setMetaphor(data.item); setMetaFade(false); }, 200);
   }, []);
 
-  const fetchOxymorons = useCallback(async () => {
-    const res = await fetch("/api/facts?type=oxymoron");
-    // pull a fresh set of 8 by calling a few times isn't ideal; grab the full set client-side
-  }, []);
-
   useEffect(() => {
     fetchRoast("all");
     fetchFact();
     fetchMetaphor();
-    // load oxymorons once from a dedicated fetch loop
+
     (async () => {
       const set = [];
       for (let i = 0; i < 8; i++) {
-        const r = await fetch("/api/facts?type=oxymoron");
-        const d = await r.json();
-        if (!set.find((x) => x.phrase === d.item.phrase)) set.push(d.item);
+        const response = await fetch("/api/facts?type=oxymoron");
+        const data = await response.json();
+        if (!set.find((item) => item.phrase === data.item.phrase)) set.push(data.item);
       }
       setOxymorons(set);
     })();
-    // eslint-disable-next-line
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const selectTag = (t) => {
-    setActiveTag(t);
-    fetchRoast(t);
+  const selectTag = (tag) => {
+    setActiveTag(tag);
+    fetchRoast(tag);
   };
 
-  const showToast = (msg) => {
-    setToast(msg);
+  const showToast = (message) => {
+    setToast(message);
     setTimeout(() => setToast(""), 2200);
   };
 
@@ -85,8 +81,8 @@ export default function Home() {
     if (navigator.share) {
       try { await navigator.share({ text }); } catch {}
     } else {
-      const wa = `https://wa.me/?text=${encodeURIComponent(text)}`;
-      window.open(wa, "_blank");
+      const whatsapp = `https://wa.me/?text=${encodeURIComponent(text)}`;
+      window.open(whatsapp, "_blank");
       showToast("Opening WhatsApp…");
     }
   };
@@ -110,14 +106,13 @@ export default function Home() {
           </div>
           <div className="navlinks">
             <a href="#roaster">Roaster</a>
-            <a href="#ladder">Your Family Tree</a>
-            <a href="#oxymorons">Oxymorons</a>
+            <a href="#evolution-tree">Evolution Tree</a>
+            <a href="#ladder">Timeline</a>
             <a href="#facts">Facts</a>
           </div>
         </div>
       </nav>
 
-      {/* HERO */}
       <header className="hero">
         <div className="wrap">
           <span className="eyebrow">no stars · no omens · just receipts</span>
@@ -134,7 +129,6 @@ export default function Home() {
         </div>
       </header>
 
-      {/* ROASTER */}
       <div className="wrap">
         <div className="roaster" id="roaster">
           <div className="roaster-head">
@@ -146,13 +140,13 @@ export default function Home() {
               >
                 all
               </button>
-              {tags.map((t) => (
+              {tags.map((tag) => (
                 <button
-                  key={t}
-                  className={`chip ${activeTag === t ? "active" : ""}`}
-                  onClick={() => selectTag(t)}
+                  key={tag}
+                  className={`chip ${activeTag === tag ? "active" : ""}`}
+                  onClick={() => selectTag(tag)}
                 >
-                  {t}
+                  {tag}
                 </button>
               ))}
             </div>
@@ -183,10 +177,11 @@ export default function Home() {
         </div>
       </div>
 
-      {/* LADDER */}
+      <EvolutionTree />
+
       <section className="block" id="ladder">
         <div className="wrap">
-          <div className="section-tag">/ the actual family tree</div>
+          <div className="section-tag">/ the actual family timeline</div>
           <h2 className="section-title">
             Meet your ancestors. Not one of them checked a horoscope.
           </h2>
@@ -197,18 +192,17 @@ export default function Home() {
           </p>
 
           <div className="ladder">
-            {LADDER.map((r, i) => (
-              <div className="rung" key={i}>
-                <div className="era">{r.era}</div>
-                <div className="who">{r.who}</div>
-                <div className="note">{r.note}</div>
+            {LADDER.map((rung, index) => (
+              <div className="rung" key={index}>
+                <div className="era">{rung.era}</div>
+                <div className="who">{rung.who}</div>
+                <div className="note">{rung.note}</div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* METAPHOR */}
       <section className="block">
         <div className="wrap">
           <div className="section-tag">/ better metaphors</div>
@@ -221,7 +215,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* OXYMORONS */}
       <section className="block" id="oxymorons">
         <div className="wrap">
           <div className="section-tag">/ the oxymoron cabinet</div>
@@ -230,17 +223,16 @@ export default function Home() {
             The quiet contradictions we walk around with every day.
           </p>
           <div className="grid">
-            {oxymorons.map((o, i) => (
-              <div className="card" key={i}>
-                <div className="ox">{o.phrase}</div>
-                <div className="oxn">{o.note}</div>
+            {oxymorons.map((oxymoron, index) => (
+              <div className="card" key={index}>
+                <div className="ox">{oxymoron.phrase}</div>
+                <div className="oxn">{oxymoron.note}</div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* FACTS */}
       <section className="block" id="facts">
         <div className="wrap">
           <div className="section-tag">/ stranger than any myth</div>
