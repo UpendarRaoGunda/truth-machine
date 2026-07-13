@@ -1,12 +1,13 @@
 import "./globals.css";
+import "./scientists.css";
 
 export const metadata = {
   title: "The Truth Machine — Evolution over Superstition",
   description:
-    "A sharp, funny reality check. Better metaphors, savage oxymorons, and the real story of how you got here — no stars, no omens, just evidence.",
+    "A sharp, funny reality check and an interactive visual atlas of life's four-billion-year history.",
   openGraph: {
     title: "The Truth Machine",
-    description: "Sarcasm, science, and the 4-billion-year story of you.",
+    description: "Evidence, evolution, and the stranger true story of how life produced us.",
     type: "website",
   },
 };
@@ -14,7 +15,7 @@ export const metadata = {
 export const viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#04110f",
+  themeColor: "#03110f",
 };
 
 export default function RootLayout({ children }) {
