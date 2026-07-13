@@ -1,0 +1,179 @@
+.scientists-section {
+  overflow: hidden;
+  background:
+    radial-gradient(60% 90% at 100% 0%, rgba(255,182,72,.07), transparent 65%),
+    linear-gradient(90deg, transparent, rgba(79,240,196,.028), transparent);
+}
+
+.scientist-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.scientist-card {
+  position: relative;
+  overflow: hidden;
+  min-height: 390px;
+  border: 1px solid rgba(79,240,196,.18);
+  border-radius: 22px;
+  padding: 25px;
+  background:
+    linear-gradient(145deg, rgba(13,47,40,.86), rgba(3,19,16,.94)),
+    radial-gradient(circle at 90% 10%, rgba(255,182,72,.12), transparent 38%);
+  box-shadow: 0 22px 65px rgba(0,0,0,.24), inset 0 1px rgba(255,255,255,.03);
+  transition: transform .2s, border-color .2s, box-shadow .2s;
+}
+
+.scientist-card::after {
+  content: "";
+  position: absolute;
+  right: -35px;
+  top: -35px;
+  width: 150px;
+  height: 150px;
+  border: 1px dashed rgba(255,182,72,.18);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 22px rgba(79,240,196,.025),
+    0 0 0 44px rgba(79,240,196,.018);
+  pointer-events: none;
+}
+
+.scientist-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(79,240,196,.42);
+  box-shadow: 0 30px 80px rgba(0,0,0,.32), inset 0 1px rgba(255,255,255,.04);
+}
+
+.scientist-card header {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.scientist-mark {
+  position: relative;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 70px;
+  height: 70px;
+  border: 1px solid rgba(79,240,196,.4);
+  border-radius: 22px 22px 22px 7px;
+  background:
+    radial-gradient(circle at 30% 25%, rgba(79,240,196,.2), transparent 45%),
+    rgba(3,20,17,.82);
+  color: var(--bio);
+  font-family: "Fraunces", serif;
+  font-size: 1.45rem;
+  font-weight: 900;
+  letter-spacing: -.04em;
+}
+
+.scientist-mark i {
+  position: absolute;
+  inset: 8px;
+  border: 1px dashed rgba(255,182,72,.35);
+  border-radius: 16px 16px 16px 4px;
+  pointer-events: none;
+}
+
+.scientist-card h3 {
+  font-family: "Fraunces", serif;
+  font-size: 1.45rem;
+  line-height: 1.05;
+}
+
+.scientist-card header p {
+  margin-top: 5px;
+  color: var(--ink-dim);
+  font-family: "JetBrains Mono", monospace;
+  font-size: .68rem;
+  line-height: 1.45;
+}
+
+.scientist-card blockquote {
+  position: relative;
+  z-index: 1;
+  min-height: 126px;
+  margin-top: 25px;
+  padding: 22px 0 20px 23px;
+  border-left: 3px solid var(--bio);
+  color: var(--ink);
+  font-family: "Fraunces", serif;
+  font-size: clamp(1.32rem, 2.4vw, 1.82rem);
+  line-height: 1.28;
+}
+
+.scientist-card blockquote::before {
+  content: "“";
+  position: absolute;
+  left: 10px;
+  top: -13px;
+  color: rgba(79,240,196,.18);
+  font-size: 5.5rem;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.scientist-punchline {
+  position: relative;
+  z-index: 1;
+  margin-top: 12px;
+  border: 1px solid rgba(255,182,72,.25);
+  border-radius: 15px;
+  padding: 14px 15px;
+  background: rgba(255,182,72,.055);
+}
+
+.scientist-punchline span {
+  display: block;
+  color: var(--amber);
+  font-family: "JetBrains Mono", monospace;
+  font-size: .59rem;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+}
+
+.scientist-punchline p {
+  margin-top: 6px;
+  color: #ffe1ae;
+  font-size: .9rem;
+  font-weight: 700;
+  line-height: 1.48;
+}
+
+.scientist-card > a {
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+  margin-top: 16px;
+  color: var(--ink-dim);
+  font-family: "JetBrains Mono", monospace;
+  font-size: .62rem;
+  line-height: 1.45;
+  text-decoration: none;
+  transition: color .18s;
+}
+
+.scientist-card > a:hover {
+  color: var(--bio);
+}
+
+@media (max-width: 760px) {
+  .scientist-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .scientist-card {
+    min-height: 0;
+    padding: 21px;
+  }
+
+  .scientist-card blockquote {
+    min-height: 0;
+  }
+}
