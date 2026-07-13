@@ -1,96 +1,66 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useEffect, useState } from "react";
 import EvolutionTree from "./components/EvolutionTree";
-import { LADDER } from "../lib/content";
+import { FACTS, LADDER, METAPHORS, OXYMORONS, ROASTS } from "../lib/content";
+
+function pickDifferent(items, current, identity = (item) => item) {
+  if (!items.length) return current;
+  if (items.length === 1) return items[0];
+  const alternatives = items.filter((item) => identity(item) !== identity(current));
+  return alternatives[Math.floor(Math.random() * alternatives.length)] || items[0];
+}
 
 export default function Home() {
-  const [roast, setRoast] = useState(null);
-  const [tags, setTags] = useState([]);
+  const tags = ["all", ...new Set(ROASTS.map((item) => item.tag))];
   const [activeTag, setActiveTag] = useState("all");
-  const [fading, setFading] = useState(false);
-
-  const [fact, setFact] = useState("");
-  const [factFade, setFactFade] = useState(false);
-
-  const [metaphor, setMetaphor] = useState("");
-  const [metaFade, setMetaFade] = useState(false);
-
-  const [oxymorons, setOxymorons] = useState([]);
+  const [roast, setRoast] = useState(ROASTS[0]);
+  const [fact, setFact] = useState(FACTS[0]);
+  const [comparison, setComparison] = useState(METAPHORS[0]);
+  const [contradictions, setContradictions] = useState(OXYMORONS);
   const [toast, setToast] = useState("");
 
-  const fetchRoast = useCallback(async (tag) => {
-    setFading(true);
-    try {
-      const res = await fetch(`/api/roast?tag=${tag || activeTag}`);
-      const data = await res.json();
-      setTimeout(() => {
-        setRoast(data.roast);
-        if (data.tags) setTags(data.tags);
-        setFading(false);
-      }, 200);
-    } catch {
-      setFading(false);
-    }
-  }, [activeTag]);
-
-  const fetchFact = useCallback(async () => {
-    setFactFade(true);
-    const res = await fetch("/api/facts?type=fact");
-    const data = await res.json();
-    setTimeout(() => { setFact(data.item); setFactFade(false); }, 200);
-  }, []);
-
-  const fetchMetaphor = useCallback(async () => {
-    setMetaFade(true);
-    const res = await fetch("/api/facts?type=metaphor");
-    const data = await res.json();
-    setTimeout(() => { setMetaphor(data.item); setMetaFade(false); }, 200);
-  }, []);
-
   useEffect(() => {
-    fetchRoast("all");
-    fetchFact();
-    fetchMetaphor();
-
-    (async () => {
-      const set = [];
-      for (let i = 0; i < 8; i++) {
-        const response = await fetch("/api/facts?type=oxymoron");
-        const data = await response.json();
-        if (!set.find((item) => item.phrase === data.item.phrase)) set.push(data.item);
-      }
-      setOxymorons(set);
-    })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    setContradictions([...OXYMORONS].sort(() => Math.random() - 0.5));
   }, []);
 
   const selectTag = (tag) => {
     setActiveTag(tag);
-    fetchRoast(tag);
+    const pool = tag === "all" ? ROASTS : ROASTS.filter((item) => item.tag === tag);
+    setRoast((current) => pickDifferent(pool, current, (item) => item.id));
+  };
+
+  const anotherRealityCheck = () => {
+    const pool = activeTag === "all" ? ROASTS : ROASTS.filter((item) => item.tag === activeTag);
+    setRoast((current) => pickDifferent(pool, current, (item) => item.id));
   };
 
   const showToast = (message) => {
     setToast(message);
-    setTimeout(() => setToast(""), 2200);
+    window.setTimeout(() => setToast(""), 2200);
   };
 
   const shareRoast = async () => {
-    if (!roast) return;
-    const text = `${roast.line}\n\n— Reality: ${roast.truth}\n\nvia The Truth Machine`;
+    const text = `${roast.line}\n\n— Evidence check: ${roast.truth}\n\nvia The Truth Machine`;
     if (navigator.share) {
-      try { await navigator.share({ text }); } catch {}
-    } else {
-      const whatsapp = `https://wa.me/?text=${encodeURIComponent(text)}`;
-      window.open(whatsapp, "_blank");
-      showToast("Opening WhatsApp…");
+      try {
+        await navigator.share({ text });
+        return;
+      } catch (error) {
+        if (error?.name === "AbortError") return;
+      }
     }
+    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank", "noopener,noreferrer");
   };
 
   const copyRoast = async () => {
-    if (!roast) return;
-    await navigator.clipboard.writeText(`${roast.line} — Reality: ${roast.truth}`);
-    showToast("Copied. Go start an argument.");
+    const text = `${roast.line} — Evidence check: ${roast.truth}`;
+    try {
+      await navigator.clipboard.writeText(text);
+      showToast("Copied.");
+    } catch {
+      showToast("Copy was blocked by the browser.");
+    }
   };
 
   return (
@@ -100,147 +70,125 @@ export default function Home() {
 
       <nav>
         <div className="wrap">
-          <div className="logo">
+          <a className="logo" href="#top" aria-label="The Truth Machine home">
             <span className="dot" />
             the<b>·</b>truth<b>·</b>machine
-          </div>
+          </a>
           <div className="navlinks">
-            <a href="#roaster">Roaster</a>
-            <a href="#evolution-tree">Evolution Tree</a>
-            <a href="#ladder">Timeline</a>
-            <a href="#facts">Facts</a>
+            <a href="#reality-check">Reality Check</a>
+            <a href="#evolution-tree">Life Atlas</a>
+            <a href="#deep-time">Deep Time</a>
+            <a href="#evidence">Evidence</a>
           </div>
         </div>
       </nav>
 
-      <header className="hero">
+      <header className="hero" id="top">
         <div className="wrap">
           <span className="eyebrow">no stars · no omens · just receipts</span>
           <h1 className="title">
             You are a <em>fish</em> that learned to<br />worry about Mercury retrograde.
           </h1>
           <p className="lede">
-            We live in an age of satellites, vaccines, and gene editing — and still
-            hang chillies on the door to fight the dark. This is a{" "}
-            <b>reality check with a sense of humour</b>: sharper metaphors, savage
-            oxymorons, and the true, stranger, far more beautiful story of how you
-            actually got here.
+            We live in an age of satellites, vaccines, and gene editing—and still hang
+            chillies on the door to fight the dark. Here is a <b>reality check with a
+            sense of humour</b>, followed by the far stranger and more beautiful story
+            of how life actually produced us.
           </p>
         </div>
       </header>
 
       <div className="wrap">
-        <div className="roaster" id="roaster">
+        <section className="roaster" id="reality-check">
           <div className="roaster-head">
-            <h2>The Truth Roaster</h2>
-            <div className="chips">
-              <button
-                className={`chip ${activeTag === "all" ? "active" : ""}`}
-                onClick={() => selectTag("all")}
-              >
-                all
-              </button>
+            <div>
+              <span className="mini-label">Evidence beats habit</span>
+              <h2>Reality Check</h2>
+            </div>
+            <div className="chips" aria-label="Choose a subject">
               {tags.map((tag) => (
                 <button
+                  type="button"
                   key={tag}
                   className={`chip ${activeTag === tag ? "active" : ""}`}
                   onClick={() => selectTag(tag)}
                 >
-                  {tag}
+                  {tag.replace("-", " ")}
                 </button>
               ))}
             </div>
           </div>
 
-          <p className={`roast-line ${fading ? "fade" : ""}`}>
-            {roast ? roast.line : "Warming up the reality engine…"}
-          </p>
-
-          {roast && (
-            <div className={`roast-truth ${fading ? "fade" : ""}`}>
-              <span>reality</span>
-              <p>{roast.truth}</p>
-            </div>
-          )}
+          <p className="roast-line">{roast.line}</p>
+          <div className="roast-truth">
+            <span>evidence check</span>
+            <p>{roast.truth}</p>
+          </div>
 
           <div className="actions">
-            <button className="btn btn-primary" onClick={() => fetchRoast()}>
-              ⚡ Roast me again
-            </button>
-            <button className="btn btn-ghost" onClick={shareRoast}>
-              Share on WhatsApp
-            </button>
-            <button className="btn btn-ghost" onClick={copyRoast}>
-              Copy
-            </button>
+            <button type="button" className="btn btn-primary" onClick={anotherRealityCheck}>⚡ Another reality check</button>
+            <button type="button" className="btn btn-ghost" onClick={shareRoast}>Share</button>
+            <button type="button" className="btn btn-ghost" onClick={copyRoast}>Copy</button>
           </div>
-        </div>
+        </section>
       </div>
 
       <EvolutionTree />
 
-      <section className="block" id="ladder">
+      <section className="block" id="deep-time">
         <div className="wrap">
-          <div className="section-tag">/ the actual family timeline</div>
-          <h2 className="section-title">
-            Meet your ancestors. Not one of them checked a horoscope.
-          </h2>
+          <div className="section-tag">/ deep time in nine transformations</div>
+          <h2 className="section-title">Your body is an archive with four billion years of edits.</h2>
           <p className="section-sub">
-            Scroll 3.8 billion years in thirty seconds. Every step is a renovation,
-            never a fresh design — which is exactly why your body is full of
-            gloriously bad plumbing.
+            Evolution rarely starts over. It modifies what already works, leaving old
+            structures, awkward routes, and brilliant compromises inside every organism.
           </p>
 
           <div className="ladder">
-            {LADDER.map((rung, index) => (
-              <div className="rung" key={index}>
+            {LADDER.map((rung) => (
+              <article className="rung" key={`${rung.era}-${rung.who}`}>
                 <div className="era">{rung.era}</div>
                 <div className="who">{rung.who}</div>
                 <div className="note">{rung.note}</div>
-              </div>
+              </article>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="block">
+      <section className="block insight-strip">
         <div className="wrap">
-          <div className="section-tag">/ better metaphors</div>
-          <p className={`metaphor ${metaFade ? "fade" : ""}`}>{metaphor}</p>
+          <div className="section-tag">/ see the old idea differently</div>
+          <p className="comparison">{comparison}</p>
           <div className="actions">
-            <button className="btn btn-ghost" onClick={fetchMetaphor}>
-              Another one →
-            </button>
+            <button type="button" className="btn btn-ghost" onClick={() => setComparison((current) => pickDifferent(METAPHORS, current))}>Show another →</button>
           </div>
         </div>
       </section>
 
-      <section className="block" id="oxymorons">
+      <section className="block" id="contradictions">
         <div className="wrap">
-          <div className="section-tag">/ the oxymoron cabinet</div>
-          <h2 className="section-title">Two words that shouldn't be friends.</h2>
-          <p className="section-sub">
-            The quiet contradictions we walk around with every day.
-          </p>
-          <div className="grid">
-            {oxymorons.map((oxymoron, index) => (
-              <div className="card" key={index}>
-                <div className="ox">{oxymoron.phrase}</div>
-                <div className="oxn">{oxymoron.note}</div>
-              </div>
+          <div className="section-tag">/ beliefs that collide with their own evidence</div>
+          <h2 className="section-title">Two ideas enter. Only one survives contact with reality.</h2>
+          <p className="section-sub">The quiet contradictions that modern life lets us carry without noticing.</p>
+          <div className="grid contradiction-grid">
+            {contradictions.map((item) => (
+              <article className="card" key={item.phrase}>
+                <div className="ox">{item.phrase}</div>
+                <div className="oxn">{item.note}</div>
+              </article>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="block" id="facts">
+      <section className="block" id="evidence">
         <div className="wrap">
-          <div className="section-tag">/ stranger than any myth</div>
+          <div className="section-tag">/ stranger than any story we invented</div>
           <div className="factbox">
-            <p className={factFade ? "fade" : ""}>{fact}</p>
-            <button className="btn btn-primary" onClick={fetchFact}>
-              🧬 Hit me with another truth
-            </button>
+            <span className="mini-label">One evidence-backed surprise</span>
+            <p>{fact}</p>
+            <button type="button" className="btn btn-primary" onClick={() => setFact((current) => pickDifferent(FACTS, current))}>🧬 Show another</button>
           </div>
         </div>
       </section>
@@ -248,17 +196,14 @@ export default function Home() {
       <footer>
         <div className="wrap">
           <div>
-            <div className="logo" style={{ marginBottom: 10 }}>
-              <span className="dot" /> the·truth·machine
-            </div>
+            <div className="logo"><span className="dot" /> the·truth·machine</div>
             <p className="disclaimer">
-              Made to poke fun at bad ideas, never at people. Curiosity is the
-              opposite of contempt. If something here changed your mind — good.
-              If it made you laugh first — even better. Believe things because
-              they're true, not because they're old.
+              Made to challenge bad ideas, never to belittle people. Curiosity is the
+              opposite of contempt. Believe things because the evidence survives testing,
+              not because the claim survived centuries.
             </p>
           </div>
-          <div>Built with evidence. Deploy on Vercel.</div>
+          <div className="footer-note">Built with evidence, uncertainty, and a sense of humour.</div>
         </div>
       </footer>
 
