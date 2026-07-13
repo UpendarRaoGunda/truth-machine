@@ -2,7 +2,14 @@
 
 import { useEffect, useState } from "react";
 import EvolutionTree from "./components/EvolutionTree";
-import { FACTS, LADDER, METAPHORS, OXYMORONS, ROASTS } from "../lib/content";
+import {
+  CONTRADICTIONS,
+  FACTS,
+  INSIGHTS,
+  LADDER,
+  ROASTS,
+  SCIENTIST_QUOTES,
+} from "../lib/content";
 
 function pickDifferent(items, current, identity = (item) => item) {
   if (!items.length) return current;
@@ -16,12 +23,12 @@ export default function Home() {
   const [activeTag, setActiveTag] = useState("all");
   const [roast, setRoast] = useState(ROASTS[0]);
   const [fact, setFact] = useState(FACTS[0]);
-  const [comparison, setComparison] = useState(METAPHORS[0]);
-  const [contradictions, setContradictions] = useState(OXYMORONS);
+  const [comparison, setComparison] = useState(INSIGHTS[0]);
+  const [contradictions, setContradictions] = useState(CONTRADICTIONS);
   const [toast, setToast] = useState("");
 
   useEffect(() => {
-    setContradictions([...OXYMORONS].sort(() => Math.random() - 0.5));
+    setContradictions([...CONTRADICTIONS].sort(() => Math.random() - 0.5));
   }, []);
 
   const selectTag = (tag) => {
@@ -77,7 +84,7 @@ export default function Home() {
           <div className="navlinks">
             <a href="#reality-check">Reality Check</a>
             <a href="#evolution-tree">Life Atlas</a>
-            <a href="#deep-time">Deep Time</a>
+            <a href="#scientists">Scientists</a>
             <a href="#evidence">Evidence</a>
           </div>
         </div>
@@ -113,7 +120,7 @@ export default function Home() {
                   className={`chip ${activeTag === tag ? "active" : ""}`}
                   onClick={() => selectTag(tag)}
                 >
-                  {tag.replace("-", " ")}
+                  {tag}
                 </button>
               ))}
             </div>
@@ -161,7 +168,45 @@ export default function Home() {
           <div className="section-tag">/ see the old idea differently</div>
           <p className="comparison">{comparison}</p>
           <div className="actions">
-            <button type="button" className="btn btn-ghost" onClick={() => setComparison((current) => pickDifferent(METAPHORS, current))}>Show another →</button>
+            <button type="button" className="btn btn-ghost" onClick={() => setComparison((current) => pickDifferent(INSIGHTS, current))}>Show another →</button>
+          </div>
+        </div>
+      </section>
+
+      <section className="block scientists-section" id="scientists">
+        <div className="wrap">
+          <div className="section-tag">/ scientists versus comfortable nonsense</div>
+          <h2 className="section-title">They studied nature. Nature never asked for your lucky number.</h2>
+          <p className="section-sub">
+            The quotations are authentic and linked to their sources. The sarcastic line below each one is ours—because historical accuracy and mockery can coexist.
+          </p>
+
+          <div className="scientist-grid">
+            {SCIENTIST_QUOTES.map((item) => (
+              <article className="scientist-card" key={item.scientist}>
+                <header>
+                  <div className="scientist-mark" aria-hidden="true">
+                    <span>{item.initials}</span>
+                    <i />
+                  </div>
+                  <div>
+                    <h3>{item.scientist}</h3>
+                    <p>{item.field} · {item.years}</p>
+                  </div>
+                </header>
+
+                <blockquote>“{item.quote}”</blockquote>
+
+                <div className="scientist-punchline">
+                  <span>Translated for superstition</span>
+                  <p>{item.punchline}</p>
+                </div>
+
+                <a href={item.sourceUrl} target="_blank" rel="noreferrer">
+                  Source: {item.source} ↗
+                </a>
+              </article>
+            ))}
           </div>
         </div>
       </section>
