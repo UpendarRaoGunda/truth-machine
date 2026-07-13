@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { TREE_SOURCES, TREE_VIEWS } from "../../lib/evolutionTree";
 import SpeciesGlyph from "./SpeciesGlyph";
+import TreeExplorer from "./TreeExplorer";
 
 const BASE_VIEW = { width: 1800, height: 900 };
 const MIN_ZOOM = 0.42;
@@ -93,25 +94,27 @@ export default function EvolutionTree() {
   const [query, setQuery] = useState("");
   const [searchMessage, setSearchMessage] = useState("");
   const [viewport, setViewport] = useState(activeView.initialViewport);
-  const [journeyId, setJourneyId] = useState(activeView.journeys[0].id);
+  const [journeyId, setJourneyId] = useState(activeView.journeys?.[0]?.id);
   const [journeyIndex, setJourneyIndex] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const svgRef = useRef(null);
   const dragRef = useRef(null);
 
-  const nodeMap = useMemo(() => new Map(activeView.nodes.map((item) => [item.id, item])), [activeView]);
-  const selected = nodeMap.get(selectedId) || activeView.nodes[0];
-  const activeJourney = activeView.journeys.find((item) => item.id === journeyId) || activeView.journeys[0];
-  const journeyNodeSet = useMemo(() => new Set(activeJourney.steps), [activeJourney]);
+  const isStandalone = Boolean(activeView.standalone);
+  const nodeMap = useMemo(() => (isStandalone ? new Map() : new Map(activeView.nodes.map((item) => [item.id, item]))), [activeView, isStandalone]);
+  const selected = isStandalone ? null : nodeMap.get(selectedId) || activeView.nodes[0];
+  const activeJourney = isStandalone ? null : activeView.journeys.find((item) => item.id === journeyId) || activeView.journeys[0];
+  const journeyNodeSet = useMemo(() => new Set(isStandalone ? [] : activeJourney.steps), [activeJourney, isStandalone]);
   const journeyPairs = useMemo(() => {
     const pairs = new Set();
+    if (isStandalone) return pairs;
     activeJourney.steps.forEach((id, index) => {
       const next = activeJourney.steps[index + 1];
       if (next) pairs.add(`${id}>${next}`);
     });
     return pairs;
-  }, [activeJourney]);
-  const lineageIds = useMemo(() => buildLineage(selected.id, activeView), [selected.id, activeView]);
+  }, [activeJourney, isStandalone]);
+  const lineageIds = useMemo(() => (isStandalone ? [] : buildLineage(selected.id, activeView)), [selected, activeView, isStandalone]);
   const lineageSet = useMemo(() => new Set(lineageIds), [lineageIds]);
   const lineagePairs = useMemo(() => {
     const pairs = new Set();
@@ -132,6 +135,7 @@ export default function EvolutionTree() {
   const setMode = (nextId) => {
     const next = TREE_VIEWS[nextId];
     setViewId(nextId);
+    if (next.standalone) return;
     setSelectedId(next.defaultNode);
     setViewport(next.initialViewport);
     setJourneyId(next.journeys[0].id);
@@ -288,6 +292,7 @@ export default function EvolutionTree() {
           </div>
         </div>
 
+        {isStandalone ? <TreeExplorer /> : (
         <div className="evo2-shell">
           <header className="evo2-toolbar">
             <div className="evo2-view-copy">
@@ -484,6 +489,7 @@ export default function EvolutionTree() {
             <span><i className="tile extinct" /> fossil branch</span>
           </div>
         </div>
+        )}
 
         <div className="evo2-notes">
           <div>

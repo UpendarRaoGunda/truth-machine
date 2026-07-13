@@ -428,6 +428,22 @@ h2.section-title {
 .evo2-sources strong { display: block; font-size: .75rem; }
 .evo2-sources small { display: block; margin-top: 3px; color: var(--ink-dim); font-size: .68rem; line-height: 1.35; }
 
+/* ---------- Explore mode: canvas deep-zoom tree ---------- */
+.evo3-canvas-wrap {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+  border-right: 1px solid var(--line);
+  background: radial-gradient(120% 120% at 50% 8%, #0a221d 0%, #03120f 60%, #020a09 100%);
+  height: 610px;
+}
+.evo3-canvas { cursor: grab; }
+.evo3-canvas:active { cursor: grabbing; }
+.evo3-detail-photo { width: 100%; height: 100%; object-fit: cover; border-radius: 28px; }
+.evo3-attribution { margin-top: 14px; }
+.evo3-attribution a { color: var(--ink-dim); font-size: .68rem; text-decoration: underline; text-decoration-color: var(--line); }
+.evo3-attribution a:hover { color: var(--bio); }
+
 /* ---------- supporting sections ---------- */
 .ladder { position: relative; padding-left: 8px; }
 .rung { position: relative; padding: 0 0 34px 42px; border-left: 2px solid var(--line); }
@@ -467,8 +483,10 @@ footer .wrap { display: flex; justify-content: space-between; gap: 24px; flex-wr
   .evo2-journey-progress { grid-template-columns: 1fr auto; }
   .evo2-progress-dots { grid-column: 1 / -1; grid-row: 2; }
   .evo2-workspace { grid-template-columns: 1fr; }
-  .evo2-canvas-wrap { border-right: 0; border-bottom: 1px solid var(--line); }
+  .evo2-canvas-wrap,
+  .evo3-canvas-wrap { border-right: 0; border-bottom: 1px solid var(--line); }
   .evo2-canvas { min-height: 520px; }
+  .evo3-canvas-wrap { height: 480px; }
   .evo2-detail { display: grid; grid-template-columns: 120px minmax(0,1fr); column-gap: 22px; }
   .evo2-detail-art { grid-row: 1 / span 4; }
   .evo2-detail-topline,
@@ -502,6 +520,7 @@ footer .wrap { display: flex; justify-content: space-between; gap: 24px; flex-wr
   .evo2-journey-progress { grid-template-columns: 1fr; }
   .evo2-progress-dots { grid-column: auto; grid-row: auto; }
   .evo2-canvas { min-height: 430px; }
+  .evo3-canvas-wrap { height: 400px; }
   .evo2-canvas-help { display: none; }
   .evo2-detail { display: block; padding: 20px; }
   .evo2-detail-art { width: 90px; height: 90px; }
