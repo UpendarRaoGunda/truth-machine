@@ -1,0 +1,14 @@
+{
+  "Homo sapiens": {
+    "extinct": false,
+    "reason": "Living species; override erroneous merged-taxonomy flag.",
+    "source": "https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=9606",
+    "reviewed": "2026-07-25"
+  },
+  "Schmidtea mediterranea": {
+    "extinct": false,
+    "reason": "Living planarian species; override erroneous merged-taxonomy flag.",
+    "source": "https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=79327",
+    "reviewed": "2026-07-25"
+  }
+}
