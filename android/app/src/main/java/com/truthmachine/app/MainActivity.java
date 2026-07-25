@@ -3,14 +3,10 @@ package com.truthmachine.app;
 import android.app.WallpaperManager;
 import android.content.ComponentName;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.util.TypedValue;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -57,9 +53,8 @@ public final class MainActivity extends AppCompatActivity {
         renderToday();
         applyButton.setOnClickListener(view -> openWallpaperPicker());
         shareButton.setOnClickListener(view -> shareToday());
-        openWebsiteButton.setOnClickListener(view -> openUrl(WEBSITE));
+        openWebsiteButton.setOnClickListener(view -> openUrl(ANCESTRY));
         openAtlasButton.setOnClickListener(view -> openUrl(ATLAS));
-        addAncestralJourneyButton();
 
         restoreThemeSelection(themeGroup);
         themeGroup.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
@@ -88,39 +83,16 @@ public final class MainActivity extends AppCompatActivity {
         previewQuote.setText(quote.line());
     }
 
-    private void addAncestralJourneyButton() {
-        ViewGroup root = findViewById(R.id.rootScroll);
-        if (root.getChildCount() == 0 || !(root.getChildAt(0) instanceof LinearLayout content)) return;
-        MaterialButton button = new MaterialButton(this);
-        button.setText(R.string.open_ancestral_journey);
-        button.setTextAllCaps(false);
-        button.setTextColor(Color.parseColor("#EDFFF8"));
-        button.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-        button.setIconResource(R.drawable.ic_ancestry);
-        button.setIconTint(ColorStateList.valueOf(Color.parseColor("#4FF0C4")));
-        button.setIconGravity(MaterialButton.ICON_GRAVITY_TEXT_START);
-        button.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#102A24")));
-        button.setStrokeColor(ColorStateList.valueOf(Color.parseColor("#554FF0C4")));
-        button.setStrokeWidth(dp(1));
-        button.setCornerRadius(dp(18));
-        button.setOnClickListener(view -> openUrl(ANCESTRY));
-        LinearLayout.LayoutParams layout = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dp(56));
-        layout.setMargins(0, dp(12), 0, 0);
-        content.addView(button, Math.max(0, content.getChildCount() - 1), layout);
-    }
-
-    private int dp(int value) {
-        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, getResources().getDisplayMetrics()));
-    }
-
     private void openWallpaperPicker() {
         ComponentName service = new ComponentName(this, DailyQuoteWallpaperService.class);
         Intent direct = new Intent(WallpaperManager.ACTION_CHANGE_LIVE_WALLPAPER);
         direct.putExtra(WallpaperManager.EXTRA_LIVE_WALLPAPER_COMPONENT, service);
-        try { startActivity(direct); }
-        catch (Exception directPickerUnavailable) {
-            try { startActivity(new Intent(WallpaperManager.ACTION_LIVE_WALLPAPER_CHOOSER)); }
-            catch (Exception pickerUnavailable) {
+        try {
+            startActivity(direct);
+        } catch (Exception directPickerUnavailable) {
+            try {
+                startActivity(new Intent(WallpaperManager.ACTION_LIVE_WALLPAPER_CHOOSER));
+            } catch (Exception pickerUnavailable) {
                 Snackbar.make(findViewById(R.id.rootScroll), "Open Android Settings → Wallpaper → Live wallpapers → Daily Truth Wallpaper.", Snackbar.LENGTH_LONG).setAction("Settings", view -> startActivity(new Intent(Settings.ACTION_SETTINGS))).show();
             }
         }
@@ -135,8 +107,11 @@ public final class MainActivity extends AppCompatActivity {
     }
 
     private void openUrl(String url) {
-        try { startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url))); }
-        catch (Exception ignored) { Snackbar.make(findViewById(R.id.rootScroll), "No browser is available on this device.", Snackbar.LENGTH_SHORT).show(); }
+        try {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+        } catch (Exception ignored) {
+            Snackbar.make(findViewById(R.id.rootScroll), "No browser is available on this device.", Snackbar.LENGTH_SHORT).show();
+        }
     }
 
     private void restoreThemeSelection(MaterialButtonToggleGroup themeGroup) {
