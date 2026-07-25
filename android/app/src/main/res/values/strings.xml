@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Truth Machine</string>
+    <string name="wallpaper_name">Daily Truth Wallpaper</string>
+    <string name="wallpaper_description">A live wallpaper that displays one evidence-minded quote every day on your home screen, lock screen, or both.</string>
+    <string name="brand_name">the·truth·machine</string>
+    <string name="daily_evidence">DAILY EVIDENCE</string>
+    <string name="apply_wallpaper">Apply live wallpaper</string>
+    <string name="share_quote">Share today’s quote</string>
+    <string name="open_truth_machine">Open Truth Machine</string>
+    <string name="open_life_atlas">Explore the Life Atlas</string>
+    <string name="wallpaper_note">Android will open its wallpaper picker. Choose “Home and lock screens” or “Both” when your device offers that option.</string>
+</resources>
