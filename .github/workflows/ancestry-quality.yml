@@ -32,4 +32,6 @@ jobs:
           PYTHONPATH=services/ancestry-engine python -m unittest discover -s services/ancestry-engine/tests -v
           python -m compileall -q services/ancestry-engine/app
       - name: Validate container configuration
-        run: docker compose -f services/ancestry-engine/docker-compose.yml config --quiet
+        run: |
+          cp services/ancestry-engine/.env.example services/ancestry-engine/.env
+          docker compose -f services/ancestry-engine/docker-compose.yml config --quiet
