@@ -1,0 +1,37 @@
+name: Ancestry quality
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - name: Test and build web experience
+        run: |
+          npm ci
+          npm test
+          npm run build
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Verify ancestry engine security core
+        run: |
+          PYTHONPATH=services/ancestry-engine python -m unittest discover -s services/ancestry-engine/tests -v
+          python -m compileall -q services/ancestry-engine/app
+      - name: Validate container configuration
+        run: |
+          cp services/ancestry-engine/.env.example services/ancestry-engine/.env
+          docker compose -f services/ancestry-engine/docker-compose.yml config --quiet

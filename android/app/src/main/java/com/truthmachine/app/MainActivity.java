@@ -22,6 +22,7 @@ import java.util.Locale;
 public final class MainActivity extends AppCompatActivity {
     private static final String WEBSITE = "https://truth-machine-coral.vercel.app/";
     private static final String ATLAS = "https://truth-machine-coral.vercel.app/#evolution-tree";
+    private static final String ANCESTRY = "https://truth-machine-coral.vercel.app/ancestry";
 
     private Quote quote;
     private TextView quoteText;
@@ -50,17 +51,14 @@ public final class MainActivity extends AppCompatActivity {
         MaterialButtonToggleGroup themeGroup = findViewById(R.id.themeGroup);
 
         renderToday();
-
         applyButton.setOnClickListener(view -> openWallpaperPicker());
         shareButton.setOnClickListener(view -> shareToday());
-        openWebsiteButton.setOnClickListener(view -> openUrl(WEBSITE));
+        openWebsiteButton.setOnClickListener(view -> openUrl(ANCESTRY));
         openAtlasButton.setOnClickListener(view -> openUrl(ATLAS));
 
         restoreThemeSelection(themeGroup);
         themeGroup.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
-            if (!isChecked) {
-                return;
-            }
+            if (!isChecked) return;
             String theme = themeForButton(checkedId);
             WallpaperPreferences.setTheme(this, theme);
             stylePreview(theme);
@@ -77,7 +75,6 @@ public final class MainActivity extends AppCompatActivity {
     private void renderToday() {
         LocalDate today = LocalDate.now();
         quote = QuoteRepository.forDate(today);
-
         String date = today.format(DateTimeFormatter.ofPattern("EEEE · d MMMM", Locale.ENGLISH)).toUpperCase(Locale.ENGLISH);
         dateLabel.setText(date);
         previewDate.setText(date);
@@ -90,18 +87,13 @@ public final class MainActivity extends AppCompatActivity {
         ComponentName service = new ComponentName(this, DailyQuoteWallpaperService.class);
         Intent direct = new Intent(WallpaperManager.ACTION_CHANGE_LIVE_WALLPAPER);
         direct.putExtra(WallpaperManager.EXTRA_LIVE_WALLPAPER_COMPONENT, service);
-
         try {
             startActivity(direct);
         } catch (Exception directPickerUnavailable) {
             try {
                 startActivity(new Intent(WallpaperManager.ACTION_LIVE_WALLPAPER_CHOOSER));
             } catch (Exception pickerUnavailable) {
-                Snackbar.make(
-                    findViewById(R.id.rootScroll),
-                    "Open Android Settings → Wallpaper → Live wallpapers → Daily Truth Wallpaper.",
-                    Snackbar.LENGTH_LONG
-                ).setAction("Settings", view -> startActivity(new Intent(Settings.ACTION_SETTINGS))).show();
+                Snackbar.make(findViewById(R.id.rootScroll), "Open Android Settings → Wallpaper → Live wallpapers → Daily Truth Wallpaper.", Snackbar.LENGTH_LONG).setAction("Settings", view -> startActivity(new Intent(Settings.ACTION_SETTINGS))).show();
             }
         }
     }
@@ -124,39 +116,20 @@ public final class MainActivity extends AppCompatActivity {
 
     private void restoreThemeSelection(MaterialButtonToggleGroup themeGroup) {
         String theme = WallpaperPreferences.getTheme(this);
-        int checkedId;
-        if (WallpaperPreferences.THEME_AURORA.equals(theme)) {
-            checkedId = R.id.themeAurora;
-        } else if (WallpaperPreferences.THEME_DAWN.equals(theme)) {
-            checkedId = R.id.themeDawn;
-        } else {
-            checkedId = R.id.themeAbyss;
-        }
+        int checkedId = WallpaperPreferences.THEME_AURORA.equals(theme) ? R.id.themeAurora : WallpaperPreferences.THEME_DAWN.equals(theme) ? R.id.themeDawn : R.id.themeAbyss;
         themeGroup.check(checkedId);
         stylePreview(theme);
     }
 
     private String themeForButton(int checkedId) {
-        if (checkedId == R.id.themeAurora) {
-            return WallpaperPreferences.THEME_AURORA;
-        }
-        if (checkedId == R.id.themeDawn) {
-            return WallpaperPreferences.THEME_DAWN;
-        }
+        if (checkedId == R.id.themeAurora) return WallpaperPreferences.THEME_AURORA;
+        if (checkedId == R.id.themeDawn) return WallpaperPreferences.THEME_DAWN;
         return WallpaperPreferences.THEME_ABYSS;
     }
 
     private void stylePreview(String theme) {
-        int quoteColour = Color.parseColor("#EDFFF8");
-        int dateColour;
-        if (WallpaperPreferences.THEME_DAWN.equals(theme)) {
-            dateColour = Color.parseColor("#FFB648");
-        } else if (WallpaperPreferences.THEME_AURORA.equals(theme)) {
-            dateColour = Color.parseColor("#78BFFF");
-        } else {
-            dateColour = Color.parseColor("#4FF0C4");
-        }
-        previewQuote.setTextColor(quoteColour);
+        int dateColour = WallpaperPreferences.THEME_DAWN.equals(theme) ? Color.parseColor("#FFB648") : WallpaperPreferences.THEME_AURORA.equals(theme) ? Color.parseColor("#78BFFF") : Color.parseColor("#4FF0C4");
+        previewQuote.setTextColor(Color.parseColor("#EDFFF8"));
         previewDate.setTextColor(dateColour);
     }
 }
