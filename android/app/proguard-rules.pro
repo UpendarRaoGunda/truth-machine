@@ -1,0 +1,2 @@
+-keep class com.truthmachine.app.DailyQuoteWallpaperService { *; }
+-keep class com.truthmachine.app.MainActivity { *; }

@@ -1,0 +1,371 @@
+.page {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  padding: 0 max(22px, calc((100vw - 1160px) / 2)) 72px;
+  color: #edfff8;
+  background:
+    radial-gradient(circle at 86% 7%, rgba(79, 240, 196, .13), transparent 32%),
+    radial-gradient(circle at 3% 78%, rgba(255, 182, 72, .08), transparent 30%),
+    linear-gradient(180deg, #061a16 0%, #03110f 58%, #020908 100%);
+}
+
+.glowOne,
+.glowTwo {
+  position: fixed;
+  z-index: 0;
+  border-radius: 999px;
+  filter: blur(120px);
+  pointer-events: none;
+}
+
+.glowOne {
+  top: -150px;
+  right: -80px;
+  width: 430px;
+  height: 430px;
+  background: rgba(79, 240, 196, .17);
+}
+
+.glowTwo {
+  bottom: 5%;
+  left: -140px;
+  width: 340px;
+  height: 340px;
+  background: rgba(255, 182, 72, .08);
+}
+
+.nav {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  min-height: 74px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  border-bottom: 1px solid rgba(79, 240, 196, .14);
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: #edfff8;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.logo span {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #4ff0c4;
+  box-shadow: 0 0 18px rgba(79, 240, 196, .8);
+}
+
+.back {
+  color: #9ab8b0;
+  font-size: 13px;
+  text-decoration: none;
+}
+
+.hero {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(320px, .85fr);
+  align-items: center;
+  gap: clamp(44px, 8vw, 100px);
+  padding: 86px 0 92px;
+}
+
+.kicker {
+  color: #4ff0c4;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+
+.copy h1 {
+  max-width: 760px;
+  margin-top: 20px;
+  font-family: "Fraunces", serif;
+  font-size: clamp(3rem, 7vw, 5.6rem);
+  line-height: .96;
+  letter-spacing: -.045em;
+}
+
+.lede {
+  max-width: 650px;
+  margin-top: 25px;
+  color: #9ab8b0;
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  line-height: 1.7;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.primary,
+.secondary {
+  display: inline-flex;
+  min-height: 54px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 15px;
+  padding: 0 22px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.primary {
+  color: #03110f;
+  background: #4ff0c4;
+  box-shadow: 0 18px 42px rgba(79, 240, 196, .18);
+}
+
+.secondary {
+  border: 1px solid rgba(79, 240, 196, .24);
+  color: #edfff8;
+  background: rgba(5, 28, 23, .66);
+}
+
+.trustRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 25px;
+}
+
+.trustRow span {
+  border: 1px solid rgba(79, 240, 196, .14);
+  border-radius: 999px;
+  padding: 7px 10px;
+  color: #8eafa6;
+  background: rgba(2, 15, 12, .4);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+}
+
+.device {
+  position: relative;
+  width: min(350px, 100%);
+  min-height: 620px;
+  justify-self: center;
+  overflow: hidden;
+  border: 2px solid rgba(237, 255, 248, .16);
+  border-radius: 50px;
+  padding: 45px 29px;
+  background:
+    radial-gradient(circle at 68% 10%, rgba(79, 240, 196, .31), transparent 29%),
+    linear-gradient(150deg, #08231d, #020908 76%);
+  box-shadow: 0 44px 100px rgba(0, 0, 0, .5), inset 0 0 0 7px rgba(255, 255, 255, .025);
+}
+
+.device::before {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  width: 92px;
+  height: 8px;
+  border-radius: 999px;
+  background: #010706;
+  content: "";
+  transform: translateX(-50%);
+}
+
+.deviceGlow {
+  position: absolute;
+  top: -80px;
+  right: -95px;
+  width: 310px;
+  height: 310px;
+  border-radius: 50%;
+  border: 1px solid rgba(79, 240, 196, .14);
+}
+
+.deviceDate {
+  margin-top: 50px;
+  color: #4ff0c4;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  letter-spacing: .13em;
+  text-align: center;
+}
+
+.device blockquote {
+  margin-top: 92px;
+  font-family: "Fraunces", serif;
+  font-size: 2.05rem;
+  font-weight: 700;
+  line-height: 1.14;
+  text-align: center;
+}
+
+.deviceEvidence {
+  margin-top: 34px;
+  border-top: 1px solid rgba(79, 240, 196, .22);
+  padding-top: 24px;
+  color: #4ff0c4;
+  font-size: .9rem;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.deviceBrand {
+  position: absolute;
+  right: 0;
+  bottom: 34px;
+  left: 0;
+  color: #78978f;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  letter-spacing: .08em;
+  text-align: center;
+}
+
+.features {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  padding: 0 0 86px;
+}
+
+.features article {
+  border: 1px solid rgba(79, 240, 196, .14);
+  border-radius: 22px;
+  padding: 23px;
+  background: linear-gradient(180deg, rgba(12, 45, 38, .72), rgba(3, 18, 15, .68));
+}
+
+.features article > span {
+  color: #4ff0c4;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+}
+
+.features h2 {
+  margin-top: 24px;
+  font-family: "Fraunces", serif;
+  font-size: 1.45rem;
+}
+
+.features p {
+  margin-top: 9px;
+  color: #92b8ae;
+  font-size: .9rem;
+  line-height: 1.6;
+}
+
+.install {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: .9fr 1.1fr;
+  gap: 50px;
+  border-top: 1px solid rgba(79, 240, 196, .16);
+  padding: 76px 0 42px;
+}
+
+.install h2 {
+  max-width: 520px;
+  margin-top: 14px;
+  font-family: "Fraunces", serif;
+  font-size: clamp(2.2rem, 4vw, 3.5rem);
+  line-height: 1.05;
+}
+
+.install ol {
+  display: grid;
+  gap: 13px;
+  list-style: none;
+}
+
+.install li {
+  display: grid;
+  grid-template-columns: minmax(140px, .7fr) 1.3fr;
+  gap: 20px;
+  border-bottom: 1px solid rgba(79, 240, 196, .12);
+  padding: 18px 0;
+}
+
+.install li b {
+  color: #edfff8;
+}
+
+.install li span {
+  color: #92b8ae;
+}
+
+.compatibility {
+  position: relative;
+  z-index: 1;
+  color: #6f9188;
+  font-size: .8rem;
+}
+
+@media (max-width: 940px) {
+  .hero {
+    grid-template-columns: 1fr;
+  }
+
+  .device {
+    min-height: 570px;
+  }
+
+  .features {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 650px) {
+  .page {
+    padding-inline: 18px;
+  }
+
+  .nav {
+    min-height: 64px;
+  }
+
+  .back {
+    font-size: 11px;
+  }
+
+  .hero {
+    padding-top: 60px;
+  }
+
+  .device {
+    min-height: 530px;
+    border-radius: 38px;
+  }
+
+  .device blockquote {
+    margin-top: 74px;
+    font-size: 1.72rem;
+  }
+
+  .features,
+  .install {
+    grid-template-columns: 1fr;
+  }
+
+  .install {
+    gap: 12px;
+  }
+
+  .install li {
+    grid-template-columns: 1fr;
+    gap: 5px;
+  }
+}

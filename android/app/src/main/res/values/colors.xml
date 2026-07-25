@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="abyss">#03110F</color>
+    <color name="abyss_2">#061C18</color>
+    <color name="surface">#0B2A24</color>
+    <color name="surface_high">#123B32</color>
+    <color name="bio">#4FF0C4</color>
+    <color name="bio_dark">#1F8F76</color>
+    <color name="amber">#FFB648</color>
+    <color name="coral">#FF7165</color>
+    <color name="ink">#EDFFF8</color>
+    <color name="ink_dim">#9ABAB1</color>
+    <color name="transparent">#00000000</color>
+</resources>

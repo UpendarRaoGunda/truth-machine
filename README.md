@@ -2,6 +2,29 @@
 
 A sharp, funny reality check followed by an evidence-led journey through the four-billion-year history of life.
 
+## Android app and daily live wallpaper
+
+The repository now includes a native Android app under `android/`.
+
+The app provides:
+
+- one deterministic evidence-minded quote per day
+- a native `WallpaperService` live wallpaper
+- automatic refresh after local midnight
+- modern Abyss, Aurora, and Dawn visual moods
+- Android’s native picker for the home screen, lock screen, or both
+- quote sharing and direct links to the web Reality Check and Life Atlas
+- no account, ads, analytics, or background tracking
+- English-only interface and wallpaper content
+
+The public website provides the install page at `/download`. GitHub Actions tests and builds the Android app, then publishes the verified APK to:
+
+```text
+public/downloads/TruthMachine.apk
+```
+
+Android controls the final live-wallpaper destination. Devices that support live wallpaper on the lock screen show **Home and lock screens** or **Both** in the system picker. Some manufacturer builds expose only the home-screen option.
+
 ## Interactive Tree of Us
 
 The homepage includes an original React/SVG visual atlas with two connected views:
@@ -39,15 +62,20 @@ A dedicated section presents short, attributed quotations from Richard Feynman, 
 - user-triggered sharing and clipboard actions have browser-safe fallbacks
 - atlas wheel handling uses a non-passive listener and cleans itself up correctly
 - direct page rendering remains usable even when an optional API route is unavailable
+- Android and web builds are verified together in GitHub Actions
+- the website publishes only the APK produced by the passing Android build
 
 ## Stack
 
 - Next.js 14 App Router
 - React 18
 - Original dependency-free SVG atlas renderer
+- Native Android Java app
+- Android Material 3
+- Android `WallpaperService`
 - No external database
 
-## Run locally
+## Run the website locally
 
 ```bash
 npm install
@@ -56,11 +84,25 @@ npm run dev
 
 Open `http://localhost:3000`.
 
-## Production build
+## Production web build
 
 ```bash
 npm run build
 npm start
+```
+
+## Build Android locally
+
+Install JDK 17 and Gradle 8.7, then run:
+
+```bash
+gradle -p android testDebugUnitTest lintDebug assembleDebug
+```
+
+The APK is written to:
+
+```text
+android/app/build/outputs/apk/debug/app-debug.apk
 ```
 
 ## Project structure
@@ -71,6 +113,11 @@ npm start
 - Shared atlas exports and references: `lib/evolutionTree.js`
 - Organism and anatomy drawings: `app/components/SpeciesGlyph.js`
 - Atlas interaction and rendering: `app/components/EvolutionTree.js`
-- Page composition: `app/page.js`
+- Homepage composition: `app/page.js`
+- Android download page: `app/download/page.js`
+- Native Android project: `android/`
+- Android live wallpaper engine: `android/app/src/main/java/com/truthmachine/app/DailyQuoteWallpaperService.java`
+- Android daily quote library: `android/app/src/main/java/com/truthmachine/app/QuoteRepository.java`
+- Combined Android/web CI and APK publication: `.github/workflows/android-and-web.yml`
 - Main visual system: `app/globals.css`
 - Scientist-card visual system: `app/scientists.css`

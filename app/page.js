@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import EvolutionTree from "./components/EvolutionTree";
+import mobileStyles from "./mobile.module.css";
 import {
   CONTRADICTIONS,
   FACTS,
@@ -83,6 +84,7 @@ export default function Home() {
           </a>
           <div className="navlinks">
             <a href="#reality-check">Reality Check</a>
+            <a href="#android-app">Android App</a>
             <a href="#evolution-tree">Life Atlas</a>
             <a href="#scientists">Scientists</a>
             <a href="#evidence">Evidence</a>
@@ -102,6 +104,14 @@ export default function Home() {
             sense of humour</b>, followed by the far stranger and more beautiful story
             of how life actually produced us.
           </p>
+          <div className={mobileStyles.heroActions}>
+            <a className={mobileStyles.downloadButton} href="/download">
+              Get the Android app
+            </a>
+            <a className={mobileStyles.secondaryButton} href="#reality-check">
+              Start with a reality check
+            </a>
+          </div>
         </div>
       </header>
 
@@ -139,6 +149,66 @@ export default function Home() {
           </div>
         </section>
       </div>
+
+      <section className={mobileStyles.appSection} id="android-app">
+        <div className="wrap">
+          <div className={mobileStyles.appShell}>
+            <div className={mobileStyles.copy}>
+              <span className={mobileStyles.kicker}>Truth Machine for Android</span>
+              <h2>One evidence-minded quote. A new live wallpaper every day.</h2>
+              <p>
+                Turn the screen you already see dozens of times into a quiet reminder
+                to question confidently repeated claims. The native app refreshes at
+                local midnight and can be applied to the home screen, lock screen, or
+                both when supported by your Android device.
+              </p>
+
+              <div className={mobileStyles.featureGrid}>
+                <div className={mobileStyles.feature}>
+                  <strong>Native live wallpaper</strong>
+                  <span>Rendered directly by Android, not a looping video.</span>
+                </div>
+                <div className={mobileStyles.feature}>
+                  <strong>Three modern moods</strong>
+                  <span>Abyss, Aurora, and Dawn remain readable behind icons.</span>
+                </div>
+                <div className={mobileStyles.feature}>
+                  <strong>Private by design</strong>
+                  <span>No account, ads, analytics, or background tracking.</span>
+                </div>
+                <div className={mobileStyles.feature}>
+                  <strong>Evidence one tap away</strong>
+                  <span>Share the quote, check claims, or open the Life Atlas.</span>
+                </div>
+              </div>
+
+              <div className={mobileStyles.heroActions}>
+                <a className={mobileStyles.downloadButton} href="/download">
+                  Download Android APK
+                </a>
+                <a className={mobileStyles.secondaryButton} href="/downloads/TruthMachine.apk.sha256">
+                  Verify checksum
+                </a>
+              </div>
+              <p className={mobileStyles.notice}>
+                Lock-screen live wallpaper availability is controlled by Android and
+                your device manufacturer.
+              </p>
+            </div>
+
+            <div className={mobileStyles.phone} aria-label="Daily live wallpaper preview">
+              <p className={mobileStyles.phoneDate}>TODAY · DAILY EVIDENCE</p>
+              <p className={mobileStyles.phoneQuote}>
+                A confident claim is not the same thing as a tested claim.
+              </p>
+              <p className={mobileStyles.phoneTruth}>
+                Confidence is a feature of the speaker. Evidence is a feature of the world.
+              </p>
+              <span className={mobileStyles.phoneBrand}>THE · TRUTH · MACHINE</span>
+            </div>
+          </div>
+        </div>
+      </section>
 
       <EvolutionTree />
 
