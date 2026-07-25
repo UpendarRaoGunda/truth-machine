@@ -1,0 +1,21 @@
+services:
+  ancestry-engine:
+    build: .
+    env_file: .env
+    ports:
+      - "8080:8080"
+    volumes:
+      - ancestry-data:/data/ancestry
+      - ./reference-panels:/reference-panels:ro
+      - ./tools:/opt/ancestry-tools:ro
+    tmpfs:
+      - /dev/shm/truth-machine-ancestry:size=2g,mode=0700,uid=10001,gid=10001
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    restart: unless-stopped
+
+volumes:
+  ancestry-data:
