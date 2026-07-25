@@ -9,5 +9,6 @@
     <string name="share_quote">Share today’s quote</string>
     <string name="open_truth_machine">Open Truth Machine</string>
     <string name="open_life_atlas">Explore the Life Atlas</string>
+    <string name="open_ancestral_journey">Explore your 70,000-year Ancestral Journey</string>
     <string name="wallpaper_note">Android will open its wallpaper picker. Choose “Home and lock screens” or “Both” when your device offers that option.</string>
 </resources>
