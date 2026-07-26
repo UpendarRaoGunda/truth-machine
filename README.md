@@ -65,6 +65,12 @@ A dedicated section presents short, attributed quotations from Richard Feynman, 
 - Android and web builds are verified together in GitHub Actions
 - the website publishes only the APK produced by the passing Android build
 
+## Deployment
+
+The existing Vercel project deploys from the `main` branch. This README update intentionally creates a fresh `main` commit so Vercel can rebuild the latest merged Truth Machine application, including Ancestral Journey.
+
+Deployment trigger updated: 26 July 2026.
+
 ## Stack
 
 - Next.js 14 App Router
