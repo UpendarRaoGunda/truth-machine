@@ -79,7 +79,6 @@
         android:layout_height="wrap_content"
         android:background="#071D18"
         android:minHeight="64dp"
-        app:itemActiveIndicatorColor="#254FF0C4"
         app:itemIconTint="@color/nav_item"
         app:itemRippleColor="#304FF0C4"
         app:itemTextColor="@color/nav_item"
