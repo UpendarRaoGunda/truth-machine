@@ -11,4 +11,21 @@
     <string name="open_life_atlas">Explore the Life Atlas</string>
     <string name="open_ancestral_journey">Explore your 70,000-year Ancestral Journey</string>
     <string name="wallpaper_note">Android will open its wallpaper picker. Choose “Home and lock screens” or “Both” when your device offers that option.</string>
+
+    <string name="nav_home">Truth</string>
+    <string name="nav_ancestry">Ancestry</string>
+    <string name="nav_atlas">Life Atlas</string>
+    <string name="nav_wallpaper">Wallpaper</string>
+    <string name="web_experience_description">The complete Truth Machine evidence experience</string>
+    <string name="offline_title">Evidence needs a connection.</string>
+    <string name="offline_message">The complete Reality Check, Life Atlas, scientist sources, and Ancestral Journey load securely from the Truth Machine website. Check your connection and try again.</string>
+    <string name="retry">Try again</string>
+    <string name="file_picker_unavailable">No compatible file picker is available.</string>
+    <string name="external_app_unavailable">No app is available to open this link.</string>
+    <string name="download_description">Downloading from The Truth Machine</string>
+    <string name="download_started">Downloading %1$s</string>
+    <string name="download_saved">Saved %1$s in Downloads/Truth Machine</string>
+    <string name="download_failed">The download could not be saved.</string>
+    <string name="share_from_truth_machine">Share from The Truth Machine</string>
+    <string name="share_failed">This item could not be shared.</string>
 </resources>
