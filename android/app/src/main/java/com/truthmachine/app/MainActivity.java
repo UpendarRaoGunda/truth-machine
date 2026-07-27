@@ -56,7 +56,6 @@ public final class MainActivity extends AppCompatActivity {
     private ValueCallback<Uri[]> pendingFileChooser;
     private boolean updatingNavigation;
 
-    @SuppressLint({"SetJavaScriptEnabled", "AddJavascriptInterface"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,6 +85,12 @@ public final class MainActivity extends AppCompatActivity {
         super.onNewIntent(intent);
         setIntent(intent);
         loadRequestedUrl(intent);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (webView != null) syncNavigation(webView.getUrl());
     }
 
     @Override
@@ -142,7 +147,7 @@ public final class MainActivity extends AppCompatActivity {
         pendingFileChooser = null;
     }
 
-    @SuppressLint("SetJavaScriptEnabled")
+    @SuppressLint({"SetJavaScriptEnabled", "AddJavascriptInterface"})
     private void configureWebView() {
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);
@@ -159,9 +164,7 @@ public final class MainActivity extends AppCompatActivity {
         settings.setJavaScriptCanOpenWindowsAutomatically(true);
         settings.setMediaPlaybackRequiresUserGesture(true);
         settings.setMixedContentMode(WebSettings.MIXED_CONTENT_NEVER_ALLOW);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            settings.setSafeBrowsingEnabled(true);
-        }
+        settings.setSafeBrowsingEnabled(true);
 
         CookieManager.getInstance().setAcceptCookie(true);
         CookieManager.getInstance().setAcceptThirdPartyCookies(webView, false);
@@ -327,7 +330,7 @@ public final class MainActivity extends AppCompatActivity {
     }
 
     private void enqueueDownload(String url, String userAgent, String contentDisposition, String mimeType) {
-        if (url == null || url.isBlank()) return;
+        if (isBlank(url)) return;
         try {
             String fileName = sanitizeFileName(URLUtil.guessFileName(url, contentDisposition, mimeType));
             DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
@@ -349,6 +352,10 @@ public final class MainActivity extends AppCompatActivity {
         }
     }
 
+    private boolean isBlank(String value) {
+        return value == null || value.trim().isEmpty();
+    }
+
     private String sanitizeFileName(String fileName) {
         String safe = fileName == null ? "truth-machine-download" : fileName.replaceAll("[\\\\/:*?\"<>|]", "_").trim();
         return safe.isEmpty() ? "truth-machine-download" : safe;
@@ -364,7 +371,7 @@ public final class MainActivity extends AppCompatActivity {
                     String url = data.optString("url", "");
                     String title = data.optString("title", getString(R.string.app_name));
                     String combined = text;
-                    if (!url.isBlank() && !text.contains(url)) combined = text.isBlank() ? url : text + "\n\n" + url;
+                    if (!isBlank(url) && !text.contains(url)) combined = isBlank(text) ? url : text + "\n\n" + url;
                     Intent share = new Intent(Intent.ACTION_SEND);
                     share.setType("text/plain");
                     share.putExtra(Intent.EXTRA_SUBJECT, title);
@@ -406,7 +413,7 @@ public final class MainActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             ContentValues values = new ContentValues();
             values.put(MediaStore.Downloads.DISPLAY_NAME, fileName);
-            values.put(MediaStore.Downloads.MIME_TYPE, mimeType == null || mimeType.isBlank() ? "application/octet-stream" : mimeType);
+            values.put(MediaStore.Downloads.MIME_TYPE, isBlank(mimeType) ? "application/octet-stream" : mimeType);
             values.put(MediaStore.Downloads.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS + "/Truth Machine");
             values.put(MediaStore.Downloads.IS_PENDING, 1);
             Uri destination = getContentResolver().insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, values);
