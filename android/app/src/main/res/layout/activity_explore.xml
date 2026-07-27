@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/abyss"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <WebView
+            android:id="@+id/webView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/abyss"
+            android:contentDescription="@string/web_experience_description" />
+
+        <ProgressBar
+            android:id="@+id/pageProgress"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:layout_gravity="top"
+            android:indeterminate="false"
+            android:max="100"
+            android:progressTint="@color/bio"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/offlinePanel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/abyss"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="32dp"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/offline_title"
+                android:textColor="@color/ink"
+                android:textSize="26sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:gravity="center"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/offline_message"
+                android:textColor="@color/ink_dim"
+                android:textSize="15sp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/retryButton"
+                android:layout_width="wrap_content"
+                android:layout_height="52dp"
+                android:layout_marginTop="22dp"
+                android:text="@string/retry"
+                android:textAllCaps="false"
+                android:textStyle="bold"
+                app:backgroundTint="@color/bio"
+                app:cornerRadius="16dp"
+                app:icon="@drawable/ic_refresh"
+                app:iconTint="@color/abyss" />
+        </LinearLayout>
+    </FrameLayout>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#071D18"
+        android:minHeight="64dp"
+        app:itemActiveIndicatorColor="#254FF0C4"
+        app:itemIconTint="@color/nav_item"
+        app:itemRippleColor="#304FF0C4"
+        app:itemTextColor="@color/nav_item"
+        app:labelVisibilityMode="labeled"
+        app:menu="@menu/menu_main_navigation" />
+
+</LinearLayout>
