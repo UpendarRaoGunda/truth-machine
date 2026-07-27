@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/ic_home"
+        android:title="@string/nav_home" />
+    <item
+        android:id="@+id/navigation_ancestry"
+        android:icon="@drawable/ic_dna"
+        android:title="@string/nav_ancestry" />
+    <item
+        android:id="@+id/navigation_atlas"
+        android:icon="@drawable/ic_tree"
+        android:title="@string/nav_atlas" />
+    <item
+        android:id="@+id/navigation_wallpaper"
+        android:icon="@drawable/ic_wallpaper"
+        android:title="@string/nav_wallpaper" />
+</menu>
