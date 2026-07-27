@@ -49,7 +49,24 @@ jobs:
           key: truth-machine-debug-keystore-v1
 
       - name: Test, lint, and build Android app
-        run: gradle -p android testDebugUnitTest lintDebug assembleDebug --stacktrace
+        shell: bash
+        run: |
+          set +e
+          gradle -p android testDebugUnitTest lintDebug assembleDebug --stacktrace --console=plain > android-build.log 2>&1
+          status=$?
+          tail -n 120 android-build.log
+          exit $status
+
+      - name: Upload Android failure diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: TruthMachine-Android-Diagnostics
+          path: |
+            android-build.log
+            android/app/build/reports/lint-results-debug.*
+            android/app/build/reports/tests/**
+          if-no-files-found: warn
 
       - name: Prepare APK
         run: |
